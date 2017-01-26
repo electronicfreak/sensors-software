@@ -1194,7 +1194,7 @@ void sendData(const String& data, const int pin, const char* host, const int htt
 	if (basic_auth_string != "") { request_head += F("Authorization: Basic "); request_head += String(basic_auth_string) + "\r\n";}
 	request_head += F("PIN: "); request_head += String(pin) + "\r\n";
 	request_head += F("Sensor: esp8266-"); request_head += esp_chipid + "\r\n";
-	request_head += F("Content-Length: "); request_head += String(data.length(),DEC) + "\r\n";
+	request_head += F("Content-Length: "); request_head += String(data.length()+5,DEC) + "\r\n";
 	request_head += F("Connection: close\r\n\r\n");
 
 	// Use WiFiClient class to create TCP connections
@@ -1223,6 +1223,7 @@ void sendData(const String& data, const int pin, const char* host, const int htt
 
 		client_s.print(request_head);
 
+		client_s.print("data=");
 		client_s.println(data);
 
 		delay(10);
@@ -1257,6 +1258,7 @@ void sendData(const String& data, const int pin, const char* host, const int htt
 
 		client.print(request_head);
 
+		client_s.print("data=");
 		client.println(data);
 
 		delay(10);
